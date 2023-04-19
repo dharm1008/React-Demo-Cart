@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import PublicRoutes from "./routes/Public";
+import PrivateRoutes from "./routes/Private";
+import { useRoutes } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import "./App.css";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  let isLoggedIn = useSelector((state) => state.auth.authenticate);
+  const routes = useRoutes([
+    { path: "/*", element: isLoggedIn ? <PrivateRoutes /> : <PublicRoutes /> },
+  ]);
+
+  return <div className="app">{routes}</div>;
 }
 
 export default App;
