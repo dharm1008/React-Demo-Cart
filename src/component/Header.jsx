@@ -39,7 +39,10 @@ function Header() {
           <CartBtn />
           <button
             className="btn btn-outline-primary ms-2"
-            onClick={() => dispatch(logout())}
+            onClick={() => {
+              dispatch(logout());
+              navigate("/");
+            }}
           >
             Logout
           </button>

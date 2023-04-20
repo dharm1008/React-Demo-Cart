@@ -4,8 +4,11 @@ import * as yup from "yup";
 import { Field, Form, FormikProvider, useFormik, ErrorMessage } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { LoginSocialGoogle } from "reactjs-social-login";
-import { GoogleLoginButton } from "react-social-login-buttons";
+import { LoginSocialFacebook, LoginSocialGoogle } from "reactjs-social-login";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from "react-social-login-buttons";
 
 const REGEX = {
   EMAIL:
@@ -59,7 +62,7 @@ function Login() {
                       name="email"
                       placeholder="name@example.com"
                     />
-                    <label for="floatingInput">Email address</label>
+                    <label htmlFor="floatingInput">Email address</label>
                     <ErrorMessage
                       component="p"
                       name="email"
@@ -73,7 +76,7 @@ function Login() {
                       name="password"
                       placeholder="Password"
                     />
-                    <label for="floatingPassword">Password</label>
+                    <label htmlFor="floatingPassword">Password</label>
                     <ErrorMessage
                       component="p"
                       name="password"
@@ -105,6 +108,21 @@ function Login() {
                     >
                       <GoogleLoginButton />
                     </LoginSocialGoogle>
+                    <LoginSocialFacebook
+                      appId={process.env.REACT_APP_FB_APP_ID || ""}
+                      fieldsProfile={
+                        "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+                      }
+                      onResolve={({ provider, data }) => {
+                        dispatch(login());
+                        navigate("/");
+                      }}
+                      onReject={(err) => {
+                        console.log(err);
+                      }}
+                    >
+                      <FacebookLoginButton />
+                    </LoginSocialFacebook>
                   </div>
                 </Form>
               </FormikProvider>
